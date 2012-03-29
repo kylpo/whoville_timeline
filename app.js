@@ -2,8 +2,8 @@
  * Module dependencies.
  */
 var express = require('express')
-  , routes = require('./routes');
-var app = module.exports = express.createServer();
+  , routes = require('./routes')
+  , app = module.exports = express.createServer();
 
 var ProfileDAO = require('./profileDAO').ProfileDAO;
 var profileDAO = new ProfileDAO('localhost', 27017);
@@ -29,34 +29,37 @@ app.configure('production', function(){
 });
 
 // Routes
+app.get('/', routes.index);
 
 /**
- * display all profiles in database
+ * return all profiles in database
  */
-app.get('/', function(req, res) {
+app.get('/profiles', function(req, res) {
     profileDAO.findAll( function(error, profiles) {
-      console.log( profiles );
-        res.render('average_timeline.jade',
-        { locals: {
-          title: 'Average',
-          profiles: profiles
-        }
-        });
+      res.json(profiles);
+      console.log( 'profiles requested' );
+        // res.render('average_timeline.jade',
+        // { locals: {
+          // title: 'Average',
+          // profiles: profiles
+        // }
+        // });
     });
 });
 
 /**
- * display all profiles, of user :id, in database
+ * return all profiles, of user :id, in database
  */
-app.get('/:id', function(req, res) {
+app.get('/profiles/:id', function(req, res) {
     profileDAO.findById(req.params.id, function(error, profiles) {
-      console.log( profiles );
-        res.render('timeline.jade',
-        { locals: {
-          title: req.params.id,
-          profiles: profiles
-        }
-        });
+      res.json(profiles);
+      console.log( 'profile requested' + req.params.id );
+        // res.render('timeline.jade',
+        // { locals: {
+          // title: req.params.id,
+          // profiles: profiles
+        // }
+        // });
     });
 });
 

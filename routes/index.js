@@ -4,5 +4,6 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' })
+  console.log( 'index requested' );
+  res.render('index.jade', { title: 'Express' });
 };
