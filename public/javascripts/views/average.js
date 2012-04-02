@@ -21,12 +21,14 @@ App.Views.Graph = Backbone.View.extend({
 
   computeData: function() {
     var data = [];
+
+    //count attributes for profile and append to data array
     this.collection.each( function (item) {
       var count = 0;
 
       for (var prop in item.attributes) {
 
-        // ignore non-profile attributes
+        // ommit non-profile attributes
         if ( prop !== '_id' && prop !== 'id' && prop !== 'date' ){
           count++;
         }
@@ -34,9 +36,7 @@ App.Views.Graph = Backbone.View.extend({
 
       data.push( count );
     });
-    //count attributes for profile
-    // return data;
-    return [4, 8, 15, 16, 23, 42];
+    return data;
   },
 
   drawGraph: function( data ) {

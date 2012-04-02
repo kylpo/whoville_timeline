@@ -11,7 +11,6 @@ App.Router = Backbone.Router.extend({
     profiles.fetch({
       add: true,
       success: function ( profiles ) {
-        debugger;
         new App.Views.Graph({ collection: profiles });
       },
       error: function() {

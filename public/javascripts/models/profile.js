@@ -1,6 +1,4 @@
 var Profile = Backbone.Model.extend({
-  // url : function() {
-    // var base = window.url_root + '/profiles/';
-    // return (this.isNew() ? base : base + this.id);
-  // }
+  // use Mongo's _id as unique id
+  idAttribute: "_id"
 });
