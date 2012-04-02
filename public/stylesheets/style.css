@@ -5,3 +5,7 @@ body {
 a {
   color: #00b7ff;
 }
+.chart rect {
+  stroke: #fff;
+  fill: #4682b4;
+}

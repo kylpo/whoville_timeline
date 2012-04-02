@@ -29,7 +29,18 @@ app.configure('production', function(){
 });
 
 // Routes
-app.get('/', routes.index);
+app.get('/', function(req, res) {
+    profileDAO.findAll( function(error, profiles) {
+      // res.json(index);
+      console.log( 'profiles requested' );
+        res.render('index.jade',
+        { locals: {
+          title: 'Average',
+          profiles: profiles
+        }
+        });
+    });
+});
 
 /**
  * return all profiles in database
