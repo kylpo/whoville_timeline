@@ -1,9 +1,9 @@
-App.Views.Average = Backbone.View.extend({
+App.Views.Single = Backbone.View.extend({
   el: '#graph',
 
-  initialize: function() {
+  initialize: function( id ) {
     _.bindAll(this, 'render', 'drawGraph', 'computeData');
-    this.collection = new App.Collections.Profiles();
+    this.collection = new App.Collections.Profiles( id );
     this.collection.bind("reset", this.render, this);
     this.collection.fetch();
     // this.computeData(); // for graph
@@ -13,6 +13,7 @@ App.Views.Average = Backbone.View.extend({
   },
 
   render: function() {
+    debugger;
     this.drawGraph();
     // debugger;
     $(this.el).html('<p>hello world</p>');

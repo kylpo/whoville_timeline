@@ -29,7 +29,17 @@ app.configure('production', function(){
 });
 
 // Routes
-app.get('/', routes.index);
+app.get('/profiles', function(req, res) {
+  console.log( '/profiles requested' );
+  res.render('average_timeline', {title: 'Express' });
+});
+
+app.get('/profiles/:id', function(req, res) {
+  console.log( '/profiles/' + req.params.id + ' requested' );
+  res.render('single_timeline', {title: 'Express', id: req.params.id });
+});
+
+//TODO /* star
 // app.get('/', function(req, res) {
     // profileDAO.findAll( function(error, profiles) {
       // console.log( '/ requested' );
@@ -37,10 +47,12 @@ app.get('/', routes.index);
     // });
 // });
 
+
+
 /**
  * return all profiles in database
  */
-app.get('/profiles', function(req, res) {
+app.get('/api/profiles', function(req, res) {
     profileDAO.findAll( function(error, profiles) {
       res.json(profiles);
       console.log( 'profiles requested' );
@@ -56,7 +68,7 @@ app.get('/profiles', function(req, res) {
 /**
  * return all profiles, of user :id, in database
  */
-app.get('/profiles/:id', function(req, res) {
+app.get('/api/profiles/:id', function(req, res) {
     profileDAO.findById(req.params.id, function(error, profiles) {
       res.json(profiles);
       console.log( 'profile requested' + req.params.id );
@@ -68,6 +80,7 @@ app.get('/profiles/:id', function(req, res) {
         // });
     });
 });
+
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
