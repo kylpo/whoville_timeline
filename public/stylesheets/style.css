@@ -9,3 +9,6 @@ a {
   stroke: #fff;
   fill: #4682b4;
 }
+.chart text {
+  fill: #fff;
+}

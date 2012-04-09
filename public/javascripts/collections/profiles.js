@@ -3,8 +3,6 @@ App.Collections.Profiles = Backbone.Collection.extend({
   // Reference to this collection's model
   model: Profile,
 
-  // url: '/api/profiles',
-
   // Set user_id if it is passed in
   initialize: function(id) {
     _.bindAll(this, 'url');
@@ -19,7 +17,6 @@ App.Collections.Profiles = Backbone.Collection.extend({
       return '/api/profiles';
     }
   }
-
 
   // parse: function(response) {
     // // debugger;

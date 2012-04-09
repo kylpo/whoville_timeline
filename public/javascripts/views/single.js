@@ -4,19 +4,16 @@ App.Views.Single = Backbone.View.extend({
   initialize: function( id ) {
     _.bindAll(this, 'render', 'drawGraph', 'computeData');
     this.collection = new App.Collections.Profiles( id );
+
+    //render is callback for when fetch returns results
     this.collection.bind("reset", this.render, this);
     this.collection.fetch();
-    // this.computeData(); // for graph
-    // this.drawGraph( this.computeData() );
-    // this.drawGraph();
-    // this.render();
   },
 
   render: function() {
-    debugger;
-    this.drawGraph();
-    // debugger;
-    $(this.el).html('<p>hello world</p>');
+    this.drawGraph( this.computeData() );
+
+    // $(this.el).html('<p>hello world</p>');
     // $(this.el).html(JST.tasks_collection({ collection: this.collection }));
     // $('#app').html(this.el);
 
@@ -28,23 +25,22 @@ App.Views.Single = Backbone.View.extend({
 
     //count attributes for profile and append to data array
     this.collection.each( function (item) {
-      var count = 0;
+      // var count = 0;
 
-      for (var prop in item.attributes) {
+      // for (var prop in item.attributes) {
 
-        // ommit non-profile attributes
-        if ( prop !== '_id' && prop !== 'id' && prop !== 'date' ){
-          count++;
-        }
-      }
+        // // ommit non-profile attributes
+        // if ( prop !== '_id' && prop !== 'id' && prop !== 'date' ){
+          // count++;
+        // }
+      // }
 
-      data.push( count );
+      data.push( item.attrCount() );
     });
     return data;
   },
 
   drawGraph: function( data ) {
-
     var chart = d3.select(this.el).append("svg")
     .attr("class", "chart")
     .attr("width", 420)
@@ -61,6 +57,24 @@ App.Views.Single = Backbone.View.extend({
     .attr("width", x)
     .attr("height", 20);
 
+    chart.selectAll("text")
+    .data(data)
+    .enter().append("text")
+    .attr("x", x)
+    .attr("y", function(d, i) { return i * 20; })
+    // .attr("y", function(d) { return y(d) + y.rangeBand() / 2; })
+    .attr("dx", -3) // padding-right
+    .attr("dy", "1em") // vertical-align: middle
+    .attr("text-anchor", "end") // text-align: right
+    .text(String);
+
+    // change color on click
+    chart.selectAll("rect").on("click", function(){
+      d3.select(this)
+      .style("fill","lightcoral")
+      .style("stroke","red");
+      debugger;
+    });
 
     // debugger;
     // d3.selectAll("body")
