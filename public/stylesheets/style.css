@@ -22,12 +22,12 @@ a {
 }
 .femalebar,
 .malebar {
-  fill: #fff;
-  stroke: #000;
+  fill: #3b5998;
 }
 .highlight rect.malebar,
 .highlight rect.femalebar {
-  fill: #3b5998;
+  fill: #fff;
+  stroke: #000;
 }
 text.malebar,
 text.femalebar {
