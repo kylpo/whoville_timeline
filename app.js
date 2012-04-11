@@ -5,7 +5,7 @@ var express = require('express')
   , routes = require('./routes')
   , app = module.exports = express.createServer();
 
-var ProfileDAO = require('./profileDAO').ProfileDAO;
+var ProfileDAO = require('./lib/profileDAO').ProfileDAO;
 var profileDAO = new ProfileDAO('localhost', 27017);
 
 // Configuration
