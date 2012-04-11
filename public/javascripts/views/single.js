@@ -1,8 +1,10 @@
 App.Views.Single = Backbone.View.extend({
   el: '#graph',
 
-  initialize: function( id ) {
+  initialize: function(id) {
     _.bindAll(this, 'render', 'drawGraph', 'computeData', 'constructAverageProfile');
+
+    this.userId = id;
     this.collection = new App.Collections.Profiles();
 
     //render is callback for when fetch returns results
@@ -11,7 +13,8 @@ App.Views.Single = Backbone.View.extend({
   },
 
   render: function() {
-    this.constructAverageProfile();
+    var data = this.constructAverageProfile();
+    // debugger;
     // this.drawGraph( this.computeData() );
 
     // $(this.el).html('<p>hello world</p>');
@@ -22,34 +25,66 @@ App.Views.Single = Backbone.View.extend({
   },
 
   constructAverageProfile: function() {
-    var data = {};
+    var dataCollection = [];
+    var userId = this.userId.toString();
 
     // create hashmap of profiles per 'month.day'
-    this.collection.each( function (item) {
-      var date = new Date(item.attributes.date);
-      var day = date.getMonth().toString() + "." + date.getDate().toString();
+    this.collection.each(function (item) {
 
-      if ( data[day] ) {
-        data[day].push( item.attrCount() );
-      } else {
-        data[day] = [item.attrCount()];
+      var fullDate = new Date(item.attributes.date);
+      var date = fullDate.getMonth().toString() + "." + fullDate.getDate().toString();
+
+      var foundInCollection = false;
+
+      // loop over all rows in collection for matching date
+      // using reverse b/c it is likely at the end b/c it is sequential
+      _.each(dataCollection.reverse(), function(row) {
+        if (row.date === date) {
+          row.averageCount.push(item.attrCount());
+          foundInCollection = true;
+
+          // check if item matches with userId, if so add this to data
+          if (item.attributes.id === userId ) {
+            row.singleCount = item.attrCount();
+            row.singleProfile = item.attributes;
+          }
+        }
+        // break out of this .each loop
+        return;
+      });
+
+      // break out of this .each loop
+      if (foundInCollection) { return; }
+
+      // if not found, fill new dataRow and add it to collection
+      var dataRow = {
+        singleCount: 0,
+        singleProfile: {},
+        date: date,
+        averageCount: [item.attrCount()]
+      };
+
+      // check if item matches with userId, if so add this to data
+      if (item.attributes.id === userId ) {
+        dataRow.singleCount = item.attrCount();
+        dataRow.singleProfile = item.attributes;
       }
+
+      dataCollection.push(dataRow);
     });
 
-    // average the counts for each hashmap entry
-    _.each(data, function(value, key) {
-      var sum = _.reduce(value, function(memo, num){ return memo + num; }, 0);
-      var total = sum / value.length;
-      var dataEntry = {};
+    // average the counts for each row entry
+    // and add totalUsers attribute
+    _.each(dataCollection, function(row) {
+      var sum = _.reduce(row.averageCount, function(memo, num){ return memo + num; }, 0);
+      row.userCount = row.averageCount.length;
+      var total = sum / row.userCount;
 
-      total = Math.round( total * 100 ) / 100;
-
-      dataEntry.total = total;
-      dataEntry.userCount = value.length;
-      data[key] = dataEntry;
+      row.averageCount = Math.round( total * 100 ) / 100;
     });
 
-    return data;
+    debugger;
+    return dataCollection;
   },
 
   computeData: function() {
@@ -73,7 +108,7 @@ App.Views.Single = Backbone.View.extend({
     return data;
   },
 
-  drawGraph: function( data ) {
+  drawGraph: function(data) {
     /* edit/input your data */
     var data = [
       {"sharedLabel": "Category 1", "barData1": 41, "barData2": 42},

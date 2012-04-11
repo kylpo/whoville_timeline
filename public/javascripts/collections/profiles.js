@@ -18,9 +18,4 @@ App.Collections.Profiles = Backbone.Collection.extend({
     }
   }
 
-  // parse: function(response) {
-    // // debugger;
-    // return response;
-  // }
-
 });
