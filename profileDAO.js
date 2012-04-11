@@ -21,10 +21,12 @@ ProfileDAO.prototype.findAll = function(callback) {
     this.getCollection(function(error, profile_collection) {
       if (error) callback(error);
       else {
-        profile_collection.find().toArray(function(error, results) {
-          if (error) callback(error);
-          else callback(null, results);
-        });
+        var results = [];
+        var cursor = profile_collection.find();
+
+        while (cursor.hasNext()) results.push(cursor.next());
+
+        callback(null, results);
       }
     });
 };
@@ -37,10 +39,12 @@ ProfileDAO.prototype.findById = function(id, callback) {
     this.getCollection(function(error, profile_collection) {
       if (error) callback(error);
       else {
-        profile_collection.find({id: id}).toArray(function(error, result) {
-          if (error) callback(error);
-          else callback(null, result);
-        });
+        var results = [];
+        var cursor = profile_collection.find({id: id});
+
+        while (cursor.hasNext()) results.push(cursor.next());
+
+        callback(null, results);
       }
     });
 };

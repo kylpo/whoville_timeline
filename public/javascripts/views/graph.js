@@ -13,7 +13,8 @@ App.Views.Graph = Backbone.View.extend({
   },
 
   render: function() {
-    this.drawGraph( this.computeData() );
+    // draw graph with reversed data so Date will be descending
+    this.drawGraph( this.computeData().reverse() );
   },
 
   computeData: function() {
