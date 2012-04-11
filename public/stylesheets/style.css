@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #e7ecf2;
 }
 a {
   color: #00b7ff;
@@ -21,11 +22,12 @@ a {
 }
 .femalebar,
 .malebar {
-  fill: #a7b6c1;
+  fill: #fff;
+  stroke: #000;
 }
 .highlight rect.malebar,
 .highlight rect.femalebar {
-  fill: #a14538;
+  fill: #3b5998;
 }
 text.malebar,
 text.femalebar {
@@ -34,4 +36,5 @@ text.femalebar {
 .highlight text {
   display: block;
   fill: #000;
+  stroke: none;
 }

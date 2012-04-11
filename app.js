@@ -47,7 +47,7 @@ app.get('/profiles/:id', function(req, res) {
 app.get('/api/profiles', function(req, res) {
     profileDAO.findAll( function(error, profiles) {
       res.json(profiles);
-      console.log( 'profiles requested' );
+      console.log( 'profiles requested. Returned ' + profiles.length );
     });
 });
 
@@ -57,7 +57,7 @@ app.get('/api/profiles', function(req, res) {
 app.get('/api/profiles/:id', function(req, res) {
     profileDAO.findById(req.params.id, function(error, profiles) {
       res.json(profiles);
-      console.log( 'profile requested' + req.params.id );
+      console.log( 'profile requested' + req.params.id + '. Returned ' + profiles.length);
     });
 });
 
